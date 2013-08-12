@@ -7,12 +7,43 @@ class World
 
   class << self
     def create_random(rows, columns)
-      #
+      raise ArgumentError.new('number rows and columns has to be > 1') unless rows > 1 && columns > 1
+
+      matrix = []
+      rows.times do |row_num|
+        matrix[row_num] = []
+        columns.times do |col_num|
+          matrix[row_num][col_num] = "#{random_state}"
+        end
+      end
+
+      World.new(:by_matrix, matrix)
+    end
+
+    private
+    def random_state
+      return (rand(2) == 1) ? ALIVE : EMPTY
     end
   end
 
-  def initialize(text_world = "..\n..")
-    parse(text_world)
+  def initialize(*args)
+    case args.length
+    when 0
+      parse("..\n..")
+    when 1
+      parse(args[0])
+    when 2
+      case args[0]
+      when :by_matrix
+        @world_matrix = args[1]
+        @max_col_number = args[1].first.count - 1
+        @max_row_number = args[1].count - 1
+      else
+        raise ArgumentError.new('Not implemented')
+      end 
+    else
+      raise ArgumentError.new('Not implemented')
+    end
   end
 
   def to_s

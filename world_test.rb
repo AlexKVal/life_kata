@@ -262,4 +262,24 @@ EOS
     assert_equal txtwrld_has_to_be_after, test_world.to_text
   end
 
+
+#========== my additional functionality ==============
+
+  def test_class_world_has_create_random_method
+    assert_respond_to World, 'create_random'
+  end
+
+  def test_method_create_random_generates_new_world
+    assert_kind_of World, World.create_random(3,3)
+  end
+
+  def test_method_create_random_generates_new_world_with_specified_dimensions
+    ex_world = World.create_random(23, 14)
+    assert_equal 23, ex_world.max_row_number + 1
+    assert_equal 14, ex_world.max_col_number + 1
+  end
+
+  def test_method_create_random_generates_different_worlds
+    assert_not_equal World.create_random(23, 14).to_text, World.create_random(23, 14).to_text
+  end
 end
