@@ -237,7 +237,7 @@ EOS
     assert ex_world.alive?(2,2)
   end
 
-#============ KATA test ===============
+#============ KATA assurance test ===============
 
   def test_kata_test
     txtwrld_before = <<EOS
@@ -257,7 +257,7 @@ EOS
 ........
 EOS
 
-    txtwrld_has_to_be_after.delete!("\n") #for equating
+    txtwrld_has_to_be_after.chop! #for equating
 
     assert_equal txtwrld_has_to_be_after, test_world.to_text
   end
