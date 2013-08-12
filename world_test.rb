@@ -10,6 +10,10 @@ class WorldTest < Test::Unit::TestCase
     @world = World.new("..\n..")
   end
 
+  def test_if_constructor_gets_no_args_creates_2x2_empty_world
+    assert_equal "..\n..", World.new().to_text
+  end
+
   def test_initializing_with_text_of_dots_and_asterisks
     assert_nothing_raised( ArgumentError ) {World.new("..*\n**.")}
     assert_raise( ArgumentError ) {World.new("..\n34")}
