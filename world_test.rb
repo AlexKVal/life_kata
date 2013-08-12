@@ -1,7 +1,9 @@
 require 'test/unit'
-require 'turn/autorun'
-
-Turn.config.format = :dot
+begin
+  require 'turn/autorun'
+  Turn.config.format = :dot
+rescue LoadError
+end
 
 require './world'
 
