@@ -31,10 +31,12 @@ class World
     when 0
       parse("..\n..")
     when 1
+      raise ArgumentError.new('Only text allowed') unless args[0].is_a? String
       parse(args[0])
     when 2
       case args[0]
       when :by_matrix
+        raise ArgumentError.new('Only text allowed') unless args[1].is_a? Array
         @world_matrix = args[1]
         @max_col_number = args[1].first.count - 1
         @max_row_number = args[1].count - 1

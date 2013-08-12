@@ -14,6 +14,23 @@ class WorldTest < Test::Unit::TestCase
     assert_equal "..\n..", World.new().to_text
   end
 
+  def test_if_constructor_gets_one_arg_its_a_text_world
+    assert_nothing_raised( ArgumentError ) {World.new("..\n..")}
+    assert_raise( ArgumentError ) {World.new(324)}
+    assert_raise( ArgumentError ) {World.new(Object.new)}
+  end
+
+  def test_if_constructor_gets_two_args_first_arg_is_switch_and_now_it_can_be_only_by_matrix
+    assert_nothing_raised( ArgumentError ) {World.new(:by_matrix, [[',', ','], [',', ',']])}
+    assert_raise( ArgumentError ) {World.new(:something, [[',', ','], [',', ',']])}
+  end
+
+  def test_if_constructor_gets_two_args_second_now_has_to_be_an_array
+    assert_nothing_raised( ArgumentError ) {World.new(:by_matrix, [[',', ','], [',', ',']])}
+    assert_raise( ArgumentError ) {World.new(:by_matrix, 123)}
+    assert_raise( ArgumentError ) {World.new(:by_matrix, 'abc')}
+  end
+
   def test_initializing_with_text_of_dots_and_asterisks
     assert_nothing_raised( ArgumentError ) {World.new("..*\n**.")}
     assert_raise( ArgumentError ) {World.new("..\n34")}
