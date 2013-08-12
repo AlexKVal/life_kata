@@ -5,6 +5,12 @@ class World
 
   attr_reader :max_row_number, :max_col_number
 
+  class << self
+    def create_random(rows, columns)
+      #
+    end
+  end
+
   def initialize(text_world = "..\n..")
     parse(text_world)
   end
