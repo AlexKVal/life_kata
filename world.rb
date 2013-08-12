@@ -56,7 +56,7 @@ class World
 
       new_world[row_num] = []
 
-      row.each_index do |col_num|
+      @world_matrix[row_num].each_index do |col_num|
         new_world[row_num][col_num] = ( number_of_neighbours(row_num, col_num) < 2 ? DEAD : ALIVE )
       end
 
