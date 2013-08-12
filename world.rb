@@ -85,7 +85,7 @@ private
     width = text_world.lines.first.delete("\n").size
     raise ArgumentError.new('Number of columns < 2') if width < 2
     @max_col_number = width - 1
-
+    @max_row_number = text_world.lines.count - 1
     @world_matrix = []
 
     text_world.lines.each_with_index do |line, coord_y|
@@ -93,7 +93,6 @@ private
       raise ArgumentError.new('Not rectangle') if line.size != width # not rectangle
       @world_matrix[coord_y] = line.split(//) # string to array of chars
     end
-    @max_row_number = text_world.lines.count
   end
 
   def next_cell_state_by_life_logic(row, col)
