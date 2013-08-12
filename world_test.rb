@@ -236,4 +236,30 @@ EOS
     assert ex_world.alive?(1,1)
     assert ex_world.alive?(2,2)
   end
+
+#============ KATA test ===============
+
+  def test_kata_test
+    txtwrld_before = <<EOS
+........
+....*...
+...**...
+........
+EOS
+    test_world = World.new(txtwrld_before)
+
+    test_world.turn
+
+    txtwrld_has_to_be_after = <<EOS
+........
+...**...
+...**...
+........
+EOS
+
+    txtwrld_has_to_be_after.delete!("\n") #for equating
+
+    assert_equal txtwrld_has_to_be_after, test_world.to_text
+  end
+
 end
