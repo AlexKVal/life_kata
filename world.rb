@@ -51,18 +51,15 @@ class World
 
   def turn
     new_world = []
-    row_num = 0
-    @world_matrix.each do |row|
+
+    @world_matrix.each_index do |row_num|
+
       new_world[row_num] = []
 
-      col_num = 0
-      row.each do |col|
+      row.each_index do |col_num|
         new_world[row_num][col_num] = ( number_of_neighbours(row_num, col_num) < 2 ? DEAD : ALIVE )
-
-        col_num += 1
       end
 
-      row_num += 1
     end
 
     @world_matrix = new_world
