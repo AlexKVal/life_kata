@@ -24,17 +24,22 @@ class World
 
   def alive?(row, col)
     return false if row < 0 || col < 0 || col > @max_col_number || row > @max_row_number
-    @world_matrix[row][col] == ALIVE
+    case @world_matrix[row][col]
+    when ALIVE
+      return true
+    when EMPTY
+      return false
+    else
+      raise ArgumentError.new('inner world_matrix has wrong data')
+    end
+    #@world_matrix[row][col] == ALIVE
   end
 
   def empty?(row, col)
     !alive?(row, col)
   end
 
-  # def empty?(row, col) # maybe refactor to return !alive?
-  #   return true if row < 0 || col < 0 || col > @max_col_number || row > @max_row_number
-  #   @world_matrix[row][col] == EMPTY
-  # end
+  alias_method :dead?, :empty?
 
   def number_of_neighbours(row, col)
     res = 0
@@ -57,7 +62,7 @@ class World
       new_world[row_num] = []
 
       @world_matrix[row_num].each_index do |col_num|
-        new_world[row_num][col_num] = ( number_of_neighbours(row_num, col_num) < 2 ? DEAD : ALIVE )
+        new_world[row_num][col_num] = next_cell_state_by_life_logic(row_num, col_num)
       end
 
     end
@@ -67,7 +72,7 @@ class World
   end
 
 private
-  def parse(text_world)
+  def parse(text_world) # do refactoring with index
     raise ArgumentError.new('Only . * \n allowed') if text_world =~ /[^\.\*\n]/
     raise ArgumentError.new('Number of lines < 2') unless text_world.lines.count > 1
 
@@ -85,6 +90,23 @@ private
       coord_y += 1
     end
     @max_row_number = coord_y - 1
+  end
+
+  def next_cell_state_by_life_logic(row, col)
+    # Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.
+    return DEAD if number_of_neighbours(row, col) < 2
+
+    # Any live cell with more than three live neighbours dies, as if by overcrowding.
+    return DEAD if number_of_neighbours(row, col) > 3
+
+    # Any live cell with two or three live neighbours lives on to the next generation.
+    return ALIVE if alive?(row, col) && ( [2,3].member? number_of_neighbours(row, col) )
+
+    # Any dead cell with exactly three live neighbours becomes a live cell.
+    return ALIVE if dead?(row, col) && (number_of_neighbours(row, col) == 3)
+
+    # other: without changes
+    return alive?(row, col) ? ALIVE : EMPTY
   end
 
 end

@@ -184,9 +184,9 @@ EOS
     assert ex_world.alive?(2,0), 'before turn 2,0'
 
     ex_world.turn
-    assert !ex_world.alive?(0,0), 'after turn 0,0'
-    assert !ex_world.alive?(0,2), 'after turn 0,2'
-    assert !ex_world.alive?(2,0), 'after turn 2,0'
+    assert ex_world.dead?(0,0), 'after turn 0,0'
+    assert ex_world.dead?(0,2), 'after turn 0,2'
+    assert ex_world.dead?(2,0), 'after turn 2,0'
   end
 
   def test_Any_live_cell_with_more_than_three_live_neighbours_dies__overcrowding
@@ -196,8 +196,44 @@ EOS
 *..
 EOS
     ex_world = World.new(txtwrld)
-    assert ex_world.alive?(0,0), 'before turn 0,0'
     assert ex_world.alive?(0,1), 'before turn 0,1'
     assert ex_world.alive?(1,0), 'before turn 1,0'
+
+    ex_world.turn
+    assert ex_world.dead?(0,1), 'after turn 0,1'
+    assert ex_world.dead?(1,0), 'after turn 1,0'
+  end
+
+  def test_Any_live_cell_with_two_or_three_live_neighbours_lives_on_to_the_next_generation
+    txtwrld = <<EOS
+***
+*..
+*..
+EOS
+    ex_world = World.new(txtwrld)
+    assert ex_world.alive?(0,0)
+    assert ex_world.alive?(0,1)
+    assert ex_world.alive?(1,0)
+
+    ex_world.turn
+    assert ex_world.alive?(0,0)
+    assert ex_world.alive?(0,1)
+    assert ex_world.alive?(1,0)
+  end
+
+  def test_Any_dead_cell_with_exactly_three_live_neighbours_becomes_a_live_cell
+    txtwrld = <<EOS
+**..
+*...
+...*
+..**
+EOS
+    ex_world = World.new(txtwrld)
+    assert ex_world.dead?(1,1)
+    assert ex_world.dead?(2,2)
+
+    ex_world.turn
+    assert ex_world.alive?(1,1)
+    assert ex_world.alive?(2,2)
   end
 end
