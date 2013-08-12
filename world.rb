@@ -87,15 +87,13 @@ private
     @max_col_number = width - 1
 
     @world_matrix = []
-    coord_y = 0
 
-    text_world.lines.each do |line|
+    text_world.lines.each_with_index do |line, coord_y|
       line.delete!("\n")
       raise ArgumentError.new('Not rectangle') if line.size != width # not rectangle
       @world_matrix[coord_y] = line.split(//) # string to array of chars
-      coord_y += 1
     end
-    @max_row_number = coord_y - 1
+    @max_row_number = text_world.lines.count
   end
 
   def next_cell_state_by_life_logic(row, col)
