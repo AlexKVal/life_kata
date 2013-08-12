@@ -189,12 +189,15 @@ EOS
     assert !ex_world.alive?(2,0), 'after turn 2,0'
   end
 
-#   def test_Any_live_cell_with_more_than_three_live_neighbours_dies__overcrowding
-#     txtwrld = <<EOS
-# *.*
-# .*.
-# *..
-# EOS
-#     ex_world = World.new(txtwrld)
-#   end
+  def test_Any_live_cell_with_more_than_three_live_neighbours_dies__overcrowding
+    txtwrld = <<EOS
+***
+**.
+*..
+EOS
+    ex_world = World.new(txtwrld)
+    assert ex_world.alive?(0,0), 'before turn 0,0'
+    assert ex_world.alive?(0,1), 'before turn 0,1'
+    assert ex_world.alive?(1,0), 'before turn 1,0'
+  end
 end
